@@ -1,18 +1,28 @@
-import {Entity, Column, PrimaryGeneratedColumn, ManyToOne, JoinTable} from "typeorm"
-import {Users} from "./user.entity";
-import {Movie} from "./movie.entity";
+import {
+	Entity,
+	JoinTable,
+	ManyToOne,
+	PrimaryGeneratedColumn
+} from 'typeorm';
+
+import { Movie } from './movie.entity';
+import { Users } from './user.entity';
 
 @Entity()
 export class Favorite {
-    @PrimaryGeneratedColumn()
-    id: number
+	constructor(user: Users, movie: Movie) {
+		this.user = user;
+		this.movie = movie;
+	}
 
-    @ManyToOne(() => Users)
-    @JoinTable()
-    user: Users;
+	@PrimaryGeneratedColumn()
+	id: number;
 
-    @ManyToOne(() => Movie)
-    @JoinTable()
-    movie: Movie;
+	@ManyToOne(() => Users)
+	@JoinTable()
+	user: Users;
 
+	@ManyToOne(() => Movie)
+	@JoinTable()
+	movie: Movie;
 }

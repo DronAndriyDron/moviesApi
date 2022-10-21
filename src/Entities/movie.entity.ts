@@ -1,34 +1,64 @@
-import {Entity, Column, PrimaryGeneratedColumn, OneToMany} from "typeorm"
+import {
+	Column,
+	Entity,
+	PrimaryGeneratedColumn
+} from 'typeorm';
 
 @Entity()
 export class Movie {
-    @PrimaryGeneratedColumn()
-    id: number
+	constructor(
+		Title: string,
+		Runtime: string,
+		Year: string,
+		Director: string,
+		Genre: string,
+		Poster: string,
+		isDeleted = false,
+		withImdbId = false
+	) {
+		this.Title = Title;
+		this.Runtime = Runtime;
+		this.Year = Year;
+		this.Director = Director;
+		this.Genre = Genre;
+		this.Poster = Poster;
+		this.isDeleted = isDeleted;
 
-    @Column()
-    Title: string
+		if (withImdbId) {
+			const unicId = '' + Date.now();
+			this.imdbID = unicId.substring(
+				unicId.length - 7,
+				unicId.length
+			);
+		}
+	}
 
-    @Column()
-    Runtime: string
+	@PrimaryGeneratedColumn()
+	id: number;
 
-    @Column()
-    Year:string
+	@Column()
+	Title: string;
 
-    @Column()
-    Director: string
+	@Column()
+	Runtime: string;
 
-    @Column()
-    Genre: string
+	@Column()
+	Year: string;
 
-    @Column()
-    Poster: string
+	@Column()
+	Director: string;
 
-    @Column()
-    isDeleted:boolean
+	@Column()
+	Genre: string;
 
-    @Column({
-        nullable:true
-    })
-    imdbID:string
+	@Column()
+	Poster: string;
 
+	@Column()
+	isDeleted: boolean;
+
+	@Column({
+		nullable: true
+	})
+	imdbID: string;
 }

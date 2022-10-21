@@ -1,19 +1,22 @@
-import { Entity, Column, PrimaryGeneratedColumn ,OneToMany} from "typeorm"
+import {
+	Column,
+	Entity,
+	PrimaryGeneratedColumn
+} from 'typeorm';
 
 @Entity()
 export class Users {
-    @PrimaryGeneratedColumn()
-    id: number
+	@PrimaryGeneratedColumn()
+	id: number;
 
-    @Column()
-    email: string
+	@Column()
+	email: string;
 
-    @Column()
-    password: string
+	@Column()
+	password: string;
 
-    @Column({
-        nullable:true
-    })
-    refreshToken:string
-
+	@Column({
+		nullable: true
+	})
+	refreshToken: string;
 }
