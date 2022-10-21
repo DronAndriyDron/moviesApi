@@ -2,34 +2,17 @@
 require('dotenv').config()
 import {Request, Response} from "express"
 import {$omdApi} from './Util/axiosBase';
-
 const cors = require('cors')
-
 const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
 const {validationResult} = require('express-validator')
 const authMiddleware = require('./MiddleWare/authMiddleware')
-
 import {Users} from "./Entities/user.entity"
-import {DataSource, ILike} from "typeorm";
+import { ILike} from "typeorm";
 import {Movie} from "./Entities/movie.entity";
 import {Favorite} from "./Entities/favorite.entity";
-
+import {myDataSource} from "./DBconfig/config";
+import {generateAccessToken} from "./Util/generateToken";
 const express = require('express');
-
-const dbport = parseInt(process.env.DB_PORT as string) || 5432;
-const myDataSource = new DataSource({
-    type: "postgres",
-    host: process.env.DB_HOST,
-    port: dbport,
-    username: process.env.DB_USER,
-    password: process.env.DB_PASS,
-    database: process.env.DB_NAME,
-    entities: [`${__dirname}/../**/*.entity.{js,ts}`],
-    logging: true,
-    synchronize: true,
-})
-
 const PORT = process.env.PORT || 3000;
 myDataSource
     .initialize()
@@ -44,14 +27,6 @@ myDataSource
 const app = express()
 app.use(express.json())
 app.use(cors())
-
-const generateAccessToken = (id: number, email: string) => {
-    const payload = {
-        id,
-        email
-    }
-    return jwt.sign(payload, process.env.JWT_SECRET, {expiresIn: "24h"})
-}
 
 app.post('/auth/register', async (req: Request, res: Response) => {
     try {
@@ -405,25 +380,6 @@ app.patch('/updateMovie/:imdbID',authMiddleware,async (req:any,res:Response)=>{
 
 
 })
-app.delete('/removeFavorite/:imdbID',authMiddleware,async(req:any,res:Response)=>{
-
-    const favorite = await myDataSource.getRepository(Favorite).findOneBy({
-        movie:{
-            imdbID:req.params.imdbID
-        }
-    })
-
-    if(favorite)
-    {
-        await myDataSource.getRepository(Favorite).delete(favorite)
-    }
-
-    res.status(201).json({
-        message:"deleted"
-    })
-
-})
-
 
 app.listen(PORT);
 console.log(`Running on http://${PORT}`);
