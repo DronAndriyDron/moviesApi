@@ -7,7 +7,7 @@ import { Users } from '../Entities/user.entity';
 import { $omdApi } from '../Util/axiosBase';
 
 class FavouriteController {
-	async addToFavorite(req: Request, res: Response) {
+	async addToFavorite(req:any, res: Response) {
 		const user = await myDataSource
 			.getRepository(Users)
 			.findOneBy({
@@ -72,7 +72,7 @@ class FavouriteController {
 		}
 	}
 
-	async getFavorites(req: Request, res: Response) {
+	async getFavorites(req: any, res: Response) {
 		const user = await myDataSource
 			.getRepository(Users)
 			.findOneBy({

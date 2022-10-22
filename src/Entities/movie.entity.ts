@@ -3,6 +3,7 @@ import {
 	Entity,
 	PrimaryGeneratedColumn
 } from 'typeorm';
+import {generateId} from '../Util/generateId'
 
 @Entity()
 export class Movie {
@@ -25,11 +26,8 @@ export class Movie {
 		this.isDeleted = isDeleted;
 
 		if (withImdbId) {
-			const unicId = '' + Date.now();
-			this.imdbID = unicId.substring(
-				unicId.length - 7,
-				unicId.length
-			);
+			
+			this.imdbID = generateId();
 		}
 	}
 
